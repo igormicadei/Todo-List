@@ -1,0 +1,28 @@
+appId: com.igormicadei.todolist
+productName: Todo List
+directories:
+  buildResources: resources
+  output: dist
+files:
+  - out/**/*
+  - package.json
+  - prisma/schema.prisma
+  - '!node_modules/**/{CHANGELOG.md,README.md,readme.md,.editorconfig}'
+asarUnpack:
+  - node_modules/.prisma/**/*
+  - node_modules/@prisma/client/**/*
+extraResources:
+  - from: prisma/migrations
+    to: prisma/migrations
+linux:
+  target:
+    - target: AppImage
+      arch: [x64]
+    - target: deb
+      arch: [x64]
+  category: Office
+mac:
+  target: dmg
+  category: public.app-category.productivity
+win:
+  target: nsis

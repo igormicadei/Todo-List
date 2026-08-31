@@ -1,0 +1,119 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// SQLite has no native enum type in Prisma, so `status` is a plain string
+// column; the application layer (zod) is the source of truth for the valid
+// set: QUEUED | IN_PROGRESS | BLOCKED | PAUSED | POSTPONED | DONE.
+
+model Project {
+  id          String   @id @default(cuid())
+  name        String
+  color       String   @default("#0f62fe")
+  description String?
+  archived    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  tasks Task[]
+}
+
+model Task {
+  id          String    @id @default(cuid())
+  title       String
+  description String?
+  status      String    @default("QUEUED")
+  date        DateTime
+  startDate   DateTime?
+  endDate     DateTime?
+  order       Int       @default(0)
+  completedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  comments TaskComment[]
+  subtasks Subtask[]
+
+  dependsOn  TaskDependency[] @relation("DependentTask")
+  dependents TaskDependency[] @relation("DependencyTask")
+
+  @@index([projectId])
+  @@index([date])
+}
+
+model Subtask {
+  id        String   @id @default(cuid())
+  title     String
+  status    String   @default("QUEUED")
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  taskId String
+  task   Task   @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  comments SubtaskComment[]
+
+  @@index([taskId])
+}
+
+model TaskDependency {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  taskId String
+  task   Task   @relation("DependentTask", fields: [taskId], references: [id], onDelete: Cascade)
+
+  dependsOnId   String
+  dependsOnTask Task   @relation("DependencyTask", fields: [dependsOnId], references: [id], onDelete: Cascade)
+
+  @@unique([taskId, dependsOnId])
+  @@index([dependsOnId])
+}
+
+model TaskComment {
+  id        String   @id @default(cuid())
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  taskId String
+  task   Task   @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  @@index([taskId])
+}
+
+model SubtaskComment {
+  id        String   @id @default(cuid())
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  subtaskId String
+  subtask   Subtask @relation(fields: [subtaskId], references: [id], onDelete: Cascade)
+
+  @@index([subtaskId])
+}
+
+model Settings {
+  id           String   @id @default("default")
+  agentBaseUrl String?
+  agentApiKey  String?
+  agentModel   String?
+  updatedAt    DateTime @updatedAt
+}
+
+model AgentMessage {
+  id        String   @id @default(cuid())
+  role      String
+  content   String
+  createdAt DateTime @default(now())
+}

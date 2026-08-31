@@ -1,0 +1,30 @@
+node_modules/
+out/
+dist/
+build/
+*.local
+.DS_Store
+.env
+
+# Prisma local dev database (real user data lives in the OS userData dir, not here)
+prisma/dev.db
+prisma/dev.db-journal
+*.sqlite
+*.sqlite-journal
+
+# Logs
+*.log
+npm-debug.log*
+
+# TypeScript incremental build info
+*.tsbuildinfo
+
+# Editor
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# Playwright verification artifacts
+test-results/
+playwright-report/
+scratch/
