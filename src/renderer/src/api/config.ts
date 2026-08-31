@@ -32,3 +32,8 @@ export function getApiConfig(): ApiConfig {
   }
   return cached
 }
+
+/** Keeps the in-memory token in sync after the Settings page regenerates it. */
+export function setApiToken(token: string): void {
+  if (cached) cached.apiToken = token
+}
