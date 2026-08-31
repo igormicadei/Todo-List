@@ -103,7 +103,10 @@ export interface CreateTaskInput {
 export function createTask(input: CreateTaskInput): Promise<Task> {
   return request('/api/tasks', { method: 'POST', body: JSON.stringify(input) })
 }
-export type UpdateTaskInput = Partial<CreateTaskInput>
+export type UpdateTaskInput = Partial<Omit<CreateTaskInput, 'startDate' | 'endDate'>> & {
+  startDate?: string | null
+  endDate?: string | null
+}
 export function updateTask(id: string, input: UpdateTaskInput): Promise<Task> {
   return request(`/api/tasks/${id}`, { method: 'PATCH', body: JSON.stringify(input) })
 }

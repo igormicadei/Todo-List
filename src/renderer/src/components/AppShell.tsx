@@ -16,6 +16,7 @@ import {
 } from '@carbon/react'
 import { ChatBot } from '@carbon/icons-react'
 import { useUiStore } from '../state/uiStore'
+import { TaskDetailPanel } from './TaskDetailPanel'
 
 interface HeaderContainerRenderProps {
   isSideNavExpanded: boolean
@@ -106,6 +107,7 @@ export function AppShell(): JSX.Element {
           <Content id="main-content" className="app-shell__content">
             <Outlet />
           </Content>
+          <TaskDetailPanel />
         </>
       )}
     />

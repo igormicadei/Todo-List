@@ -10,6 +10,9 @@ interface UiState {
   agentPanelOpen: boolean
   toggleAgentPanel: () => void
   closeAgentPanel: () => void
+  openTaskId: string | null
+  openTask: (id: string) => void
+  closeTask: () => void
 }
 
 export const useUiStore = create<UiState>((set) => ({
@@ -19,5 +22,8 @@ export const useUiStore = create<UiState>((set) => ({
   setCalendarView: (view) => set({ calendarView: view }),
   agentPanelOpen: false,
   toggleAgentPanel: () => set((state) => ({ agentPanelOpen: !state.agentPanelOpen })),
-  closeAgentPanel: () => set({ agentPanelOpen: false })
+  closeAgentPanel: () => set({ agentPanelOpen: false }),
+  openTaskId: null,
+  openTask: (id) => set({ openTaskId: id }),
+  closeTask: () => set({ openTaskId: null })
 }))

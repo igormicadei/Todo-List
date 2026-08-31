@@ -4,6 +4,15 @@ export const STATUS_VALUES: StatusValue[] = ['QUEUED', 'IN_PROGRESS', 'BLOCKED',
 
 export const STATUSES_REQUIRING_COMMENT: ReadonlySet<StatusValue> = new Set(['BLOCKED', 'PAUSED', 'POSTPONED'])
 
+export const STATUS_LABELS: Record<StatusValue, string> = {
+  QUEUED: 'Queued',
+  IN_PROGRESS: 'In progress',
+  BLOCKED: 'Blocked',
+  PAUSED: 'Paused',
+  POSTPONED: 'Postponed',
+  DONE: 'Done'
+}
+
 export interface Project {
   id: string
   name: string

@@ -8,3 +8,8 @@ interface ImportMetaEnv {
 interface ImportMeta {
   readonly env: ImportMetaEnv
 }
+
+declare module '@editorjs/checklist' {
+  const Checklist: unknown
+  export default Checklist
+}

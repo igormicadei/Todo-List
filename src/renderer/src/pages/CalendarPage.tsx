@@ -36,6 +36,7 @@ function shiftDate(view: CalendarViewMode, date: Date, direction: 1 | -1): Date 
 const VIEW_ORDER: CalendarViewMode[] = ['day', 'week', 'month']
 
 export function CalendarPage(): JSX.Element {
+  const openTask = useUiStore((state) => state.openTask)
   const selectedDate = useUiStore((state) => state.selectedDate)
   const setSelectedDate = useUiStore((state) => state.setSelectedDate)
   const calendarView = useUiStore((state) => state.calendarView)
@@ -113,7 +114,13 @@ export function CalendarPage(): JSX.Element {
       )}
       {!tasksQuery.data && !tasksQuery.error && <InlineLoading description="Loading calendar…" />}
       {tasksQuery.data && (
-        <CalendarView tasks={tasksQuery.data} view={calendarView} date={selectedDate} onNavigate={setSelectedDate} />
+        <CalendarView
+          tasks={tasksQuery.data}
+          view={calendarView}
+          date={selectedDate}
+          onNavigate={setSelectedDate}
+          onSelectEvent={(task) => openTask(task.id)}
+        />
       )}
     </div>
   )

@@ -4,6 +4,7 @@ import { ViewMode } from 'gantt-task-react'
 import { ContentSwitcher, InlineLoading, InlineNotification, Switch } from '@carbon/react'
 import * as api from '../api/client'
 import { GanttView } from '../components/GanttView'
+import { useUiStore } from '../state/uiStore'
 
 const VIEW_MODES: Array<{ name: string; mode: ViewMode }> = [
   { name: 'day', mode: ViewMode.Day },
@@ -12,6 +13,7 @@ const VIEW_MODES: Array<{ name: string; mode: ViewMode }> = [
 ]
 
 export function GanttPage(): JSX.Element {
+  const openTask = useUiStore((state) => state.openTask)
   const [viewMode, setViewMode] = useState<ViewMode>(ViewMode.Week)
   const ganttQuery = useQuery({ queryKey: ['gantt'], queryFn: () => api.getGanttView() })
 
@@ -53,7 +55,7 @@ export function GanttPage(): JSX.Element {
         />
       )}
       {!ganttQuery.data && !ganttQuery.error && <InlineLoading description="Loading tasks…" />}
-      {ganttQuery.data && <GanttView data={ganttQuery.data} viewMode={viewMode} />}
+      {ganttQuery.data && <GanttView data={ganttQuery.data} viewMode={viewMode} onTaskClick={openTask} />}
     </div>
   )
 }

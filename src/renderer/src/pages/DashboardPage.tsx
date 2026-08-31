@@ -3,12 +3,14 @@ import { InlineLoading, InlineNotification } from '@carbon/react'
 import * as api from '../api/client'
 import { TodayProgress } from '../components/TodayProgress'
 import { KanbanBoard } from '../components/KanbanBoard'
+import { useUiStore } from '../state/uiStore'
 
 function errorMessage(error: unknown): string {
   return error instanceof Error ? error.message : 'Unknown error'
 }
 
 export function DashboardPage(): JSX.Element {
+  const openTask = useUiStore((state) => state.openTask)
   const progressQuery = useQuery({ queryKey: ['progress'], queryFn: () => api.getProgress() })
   const kanbanQuery = useQuery({ queryKey: ['kanban'], queryFn: () => api.getKanbanView() })
 
@@ -33,7 +35,11 @@ export function DashboardPage(): JSX.Element {
       <div style={{ marginBottom: '2rem', maxWidth: 480 }}>
         <TodayProgress progress={progressQuery.data} />
       </div>
-      <KanbanBoard next={kanbanQuery.data.next} doing={kanbanQuery.data.doing} />
+      <KanbanBoard
+        next={kanbanQuery.data.next}
+        doing={kanbanQuery.data.doing}
+        onTaskClick={(task) => openTask(task.id)}
+      />
     </div>
   )
 }
