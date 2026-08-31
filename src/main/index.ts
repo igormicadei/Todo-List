@@ -1,6 +1,6 @@
-import { app, BrowserWindow, shell } from 'electron'
+import { app, BrowserWindow, dialog, shell } from 'electron'
 import { join } from 'path'
-import { getMigrationsDir, loadOrCreateConfig } from './config'
+import { getMigrationsDir, loadOrCreateConfig, regenerateApiToken } from './config'
 import { registerIpcHandlers } from './ipc'
 import { runMigrations } from './server/migrate'
 import { startServer } from './server/createServer'
@@ -49,27 +49,39 @@ if (!gotSingleInstanceLock) {
     }
   })
 
-  app.whenReady().then(async () => {
-    const config = loadOrCreateConfig()
-    runMigrations(config.dbPath, getMigrationsDir())
+  app
+    .whenReady()
+    .then(async () => {
+      const config = loadOrCreateConfig()
+      runMigrations(config.dbPath, getMigrationsDir())
 
-    const server = await startServer({
-      dbPath: config.dbPath,
-      apiToken: config.apiToken,
-      port: config.port
+      const server = await startServer({
+        dbPath: config.dbPath,
+        apiToken: config.apiToken,
+        port: config.port,
+        regenerateToken: regenerateApiToken
+      })
+
+      registerIpcHandlers({
+        apiBaseUrl: `http://127.0.0.1:${server.port}`,
+        apiToken: config.apiToken
+      })
+
+      createWindow()
+
+      app.on('activate', () => {
+        if (BrowserWindow.getAllWindows().length === 0) createWindow()
+      })
     })
-
-    registerIpcHandlers({
-      apiBaseUrl: `http://127.0.0.1:${server.port}`,
-      apiToken: config.apiToken
+    .catch((error: unknown) => {
+      const message = error instanceof Error ? error.message : String(error)
+      console.error('Failed to start Todo List:', error)
+      dialog.showErrorBox(
+        'Todo List failed to start',
+        `The local server could not start (it may already be running, or its port is in use).\n\n${message}`
+      )
+      app.quit()
     })
-
-    createWindow()
-
-    app.on('activate', () => {
-      if (BrowserWindow.getAllWindows().length === 0) createWindow()
-    })
-  })
 
   app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') app.quit()
