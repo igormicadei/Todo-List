@@ -1,19 +1,36 @@
 import { Router } from 'express'
+import { z } from 'zod'
 import type { PrismaClient } from '@prisma/client'
+import { asyncHandler } from '../utils/asyncHandler'
+import * as agentService from '../services/agentService'
 
-// Fleshed out in the agent/LLM integration milestone (tool-use loop against
-// the configured Anthropic-compatible endpoint). Present now only so the
-// router tree mounts cleanly.
-export function createAgentRouter(_prisma: PrismaClient): Router {
+const chatSchema = z.object({ message: z.string().min(1) })
+
+export function createAgentRouter(prisma: PrismaClient): Router {
   const router = Router()
 
-  router.post('/chat', (_req, res) => {
-    res.status(501).json({ error: 'Agent chat is not implemented yet' })
-  })
+  router.get(
+    '/messages',
+    asyncHandler(async (_req, res) => {
+      res.json(await agentService.listMessages(prisma))
+    })
+  )
 
-  router.post('/reset', (_req, res) => {
-    res.status(501).json({ error: 'Agent chat is not implemented yet' })
-  })
+  router.post(
+    '/chat',
+    asyncHandler(async (req, res) => {
+      const { message } = chatSchema.parse(req.body)
+      res.json(await agentService.sendMessage(prisma, message))
+    })
+  )
+
+  router.post(
+    '/reset',
+    asyncHandler(async (_req, res) => {
+      await agentService.resetConversation(prisma)
+      res.status(204).send()
+    })
+  )
 
   return router
 }
