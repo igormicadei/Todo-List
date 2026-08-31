@@ -1,0 +1,32 @@
+@use '@carbon/react';
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+}
+
+.app-shell__content {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.app-shell__side-panel {
+  position: fixed;
+  top: 3rem;
+  right: 0;
+  bottom: 0;
+  width: 24rem;
+  max-width: 100vw;
+  background: var(--cds-layer, #f4f4f4);
+  border-left: 1px solid var(--cds-border-subtle, #e0e0e0);
+  box-shadow: -2px 0 6px rgba(0, 0, 0, 0.15);
+  z-index: 8000;
+  display: flex;
+  flex-direction: column;
+}
