@@ -1,4 +1,4 @@
-import type { PrismaClient } from '@prisma/client'
+import type { PrismaClient } from '../db'
 import { HttpError } from '../middleware/errorHandler'
 import { STATUS_VALUES, type StatusValue } from '../types/status'
 import { textToEditorJsContent } from '../utils/editorjs'

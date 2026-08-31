@@ -2,6 +2,7 @@ node_modules/
 out/
 dist/
 build/
+generated/
 *.local
 .DS_Store
 .env

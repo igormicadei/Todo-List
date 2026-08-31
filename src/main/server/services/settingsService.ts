@@ -1,4 +1,4 @@
-import type { PrismaClient, Settings } from '@prisma/client'
+import type { PrismaClient, Settings } from '../db'
 
 export interface PublicSettings {
   agentBaseUrl: string | null

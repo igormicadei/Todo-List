@@ -1,4 +1,4 @@
-import type { PrismaClient } from '@prisma/client'
+import type { PrismaClient } from '../db'
 
 export interface ProgressSummary {
   date: string

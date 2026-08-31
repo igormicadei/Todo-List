@@ -6,14 +6,18 @@ directories:
 files:
   - out/**/*
   - package.json
-  - prisma/schema.prisma
   - '!node_modules/**/{CHANGELOG.md,README.md,readme.md,.editorconfig}'
-asarUnpack:
-  - node_modules/.prisma/**/*
-  - node_modules/@prisma/client/**/*
 extraResources:
   - from: prisma/migrations
     to: prisma/migrations
+  # The generated Prisma client (see prisma/schema.prisma's generator `output`)
+  # is shipped as a plain extra resource rather than through node_modules —
+  # electron-builder's file packaging silently drops the conventional
+  # node_modules/.prisma/client (dot-prefixed directories aren't matched by its
+  # file crawler), which broke the packaged app at runtime. src/main/server/db.ts
+  # loads it from here via `process.resourcesPath`, not module resolution.
+  - from: generated/prisma-client
+    to: prisma-client
 linux:
   target:
     - target: AppImage

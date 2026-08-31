@@ -1,4 +1,4 @@
-import type { PrismaClient, Project } from '@prisma/client'
+import type { PrismaClient, Project } from '../db'
 import { HttpError } from '../middleware/errorHandler'
 
 export async function listProjects(

@@ -1,4 +1,4 @@
-import type { PrismaClient, Subtask } from '@prisma/client'
+import type { PrismaClient, Subtask } from '../db'
 import { HttpError } from '../middleware/errorHandler'
 import { STATUSES_REQUIRING_COMMENT, type StatusValue } from '../types/status'
 import {

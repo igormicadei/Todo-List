@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { z } from 'zod'
-import type { PrismaClient } from '@prisma/client'
+import type { PrismaClient } from '../db'
 import { asyncHandler } from '../utils/asyncHandler'
 import * as agentService from '../services/agentService'
 

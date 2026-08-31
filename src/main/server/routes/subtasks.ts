@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import type { PrismaClient } from '@prisma/client'
+import type { PrismaClient } from '../db'
 import { asyncHandler } from '../utils/asyncHandler'
 import { changeStatusSchema, createCommentSchema, updateSubtaskSchema } from '../types/validation'
 import * as subtaskService from '../services/subtaskService'

@@ -1,5 +1,12 @@
+// Generated to a plain (non-dot) directory outside node_modules: electron-builder's
+// file packaging silently drops dot-prefixed directories like the default
+// node_modules/.prisma/client, breaking the packaged app at runtime. See
+// src/main/server/db.ts for how the generated client is loaded (by an explicit
+// path, not Node's node_modules resolution) and electron-builder.yml's
+// extraResources entry that ships it.
 generator client {
   provider = "prisma-client-js"
+  output   = "../generated/prisma-client"
 }
 
 datasource db {

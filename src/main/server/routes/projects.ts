@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import type { PrismaClient } from '@prisma/client'
+import type { PrismaClient } from '../db'
 import { asyncHandler } from '../utils/asyncHandler'
 import { createProjectSchema, updateProjectSchema } from '../types/validation'
 import * as projectService from '../services/projectService'

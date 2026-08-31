@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import type { PrismaClient } from '@prisma/client'
+import type { PrismaClient } from '../db'
 import { asyncHandler } from '../utils/asyncHandler'
 import { HttpError } from '../middleware/errorHandler'
 import * as taskService from '../services/taskService'

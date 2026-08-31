@@ -1,4 +1,4 @@
-import type { PrismaClient, Task, Project } from '@prisma/client'
+import type { PrismaClient, Task, Project } from '../db'
 import { HttpError } from '../middleware/errorHandler'
 import { STATUSES_REQUIRING_COMMENT, type StatusValue } from '../types/status'
 import {
